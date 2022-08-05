@@ -30,6 +30,7 @@ namespace AlphaWorldMap
         public static float MOUSE_MULTIPLIER = .00105f;
         public static float WORLD_COORD_MULTIPLIER = .0078125f; /* 1/128 */
         public static float PATH_Z_POS = -.1f;
+        public static float REFERENCE_DPI = 163f;
 
         public static Vector2 GZ_COORDS = new Vector2(255.5f, -255.5f);
         public static Vector2 RUNTIME_COORDS_DEFAULT = new Vector2(float.MaxValue, float.MaxValue);
