@@ -11,7 +11,8 @@ namespace AlphaWorldMap
         private bool _dragging = false;
         private Vector3 _previousMousePosition;
         private Vector2 _lastUpdatedPosition = Vector2.zero;
-        private int _zoomLevel = Constants.ZOOM_LEVEL_DEFAULT;
+        private float _zoomLevel = Constants.ZOOM_LEVEL_DEFAULT;
+        private bool _inputLocked = false;
 
         private void Start()
         {
@@ -19,6 +20,8 @@ namespace AlphaWorldMap
             RuntimePositioner();
             Application.runInBackground = true;
             SetZoomLevel();
+            InterfaceManager.Instance.WindowMinimized += LockInput;
+            InterfaceManager.Instance.WindowMaximized += UnlockInput;
         }
 
         private async void RuntimePositioner()
@@ -56,6 +59,8 @@ namespace AlphaWorldMap
 
         private void Update()
         {
+            if (_inputLocked) return;
+
             if (Input.GetMouseButtonDown(0))
             {
                 _previousMousePosition = Input.mousePosition;
@@ -90,12 +95,24 @@ namespace AlphaWorldMap
         private void ChangeZoomLevel(bool increase)
         {
             _zoomLevel = increase
-                ? Mathf.Min(_zoomLevel + 1, Constants.ZOOM_LEVEL_MAX)
-                : Mathf.Max(_zoomLevel - 1, Constants.ZOOM_LEVEL_MIN);
+                ? Mathf.Min(_zoomLevel + 1f, Constants.ZOOM_LEVEL_MAX)
+                : Mathf.Max(_zoomLevel - 1f, Constants.ZOOM_LEVEL_MIN);
             SetZoomLevel();
         }
 
         private void SetZoomLevel()
             => Camera.main.orthographicSize = _zoomLevel;
+
+        private void LockInput()
+        {
+            _inputLocked = true;
+            Camera.main.orthographicSize = Constants.ZOOM_LEVEL_LOCKED;
+        }
+
+        private void UnlockInput()
+        {
+            _inputLocked = false;
+            Camera.main.orthographicSize = _zoomLevel;
+        }
     }
 }

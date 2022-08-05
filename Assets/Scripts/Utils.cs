@@ -30,6 +30,46 @@ namespace AlphaWorldMap
             return (new Vector2(lon, lat), direction);
         }
 
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool SetWindowPos(
+            IntPtr hWnd,
+            IntPtr hWndInsertAfter,
+            short X,
+            short Y,
+            short cx,
+            short cy,
+            uint uFlags
+        );
+
+        [DllImport("user32.dll")]
+        public static extern System.IntPtr SetWindowLong(
+             IntPtr hWnd,
+             int nIndex,
+             uint dwNewLong
+        );
+
+        [DllImport("user32.dll")]
+        public static extern System.IntPtr GetWindowLong(
+            IntPtr hWnd,
+            int nIndex
+        );
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetActiveWindow();
+
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
 
