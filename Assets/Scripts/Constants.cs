@@ -18,6 +18,9 @@ namespace AlphaWorldMap
         public static int Y_MAX = 279;
         public static int RENDER_RADIUS = 8;
         public static int RUNTIME_COORDS_POLLING_PERIOD = 100;
+        public static int ZOOM_LEVEL_DEFAULT = 3;
+        public static int ZOOM_LEVEL_MIN = 1;
+        public static int ZOOM_LEVEL_MAX = 5;
 
         public static float TILE_UPDATE_DISTANCE = 1.5f;
         public static float MOUSE_MULTIPLIER = .0045f;

@@ -11,12 +11,14 @@ namespace AlphaWorldMap
         private bool _dragging = false;
         private Vector3 _previousMousePosition;
         private Vector2 _lastUpdatedPosition = Vector2.zero;
+        private int _zoomLevel = Constants.ZOOM_LEVEL_DEFAULT;
 
         private void Start()
         {
             UpdateTiles();
             RuntimePositioner();
             Application.runInBackground = true;
+            SetZoomLevel();
         }
 
         private async void RuntimePositioner()
@@ -65,6 +67,9 @@ namespace AlphaWorldMap
                 UpdateTiles();
             }
 
+            if (Input.mouseScrollDelta.y != 0)
+                ChangeZoomLevel(Input.mouseScrollDelta.y < 0);
+
             if (_dragging)
             {
                 var mousePosition = Input.mousePosition;
@@ -81,5 +86,16 @@ namespace AlphaWorldMap
                 Mathf.FloorToInt(Camera.main.transform.position.x),
                 -Mathf.FloorToInt(Camera.main.transform.position.y)));
         }
+
+        private void ChangeZoomLevel(bool increase)
+        {
+            _zoomLevel = increase
+                ? Mathf.Min(_zoomLevel + 1, Constants.ZOOM_LEVEL_MAX)
+                : Mathf.Max(_zoomLevel - 1, Constants.ZOOM_LEVEL_MIN);
+            SetZoomLevel();
+        }
+
+        private void SetZoomLevel()
+            => Camera.main.orthographicSize = _zoomLevel;
     }
 }
