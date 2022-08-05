@@ -1,3 +1,4 @@
+using AlphaWorldMap.Models;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ namespace AlphaWorldMap
     public class CameraController : MonoSingleton<MapTiler>
     {
         [SerializeField] private GameObject runtimePositionIndicator;
+        [SerializeField] private Transform runtimeDirectionIndicator;
         private bool _dragging = false;
         private Vector3 _previousMousePosition;
         private float _updateTilesTimer;
@@ -22,13 +24,25 @@ namespace AlphaWorldMap
             while (Application.isPlaying)
             {
                 var playerWorldCoords = Utils.GetRuntimeCoordinates();
-                var awInFocus = playerWorldCoords != Constants.RUNTIME_COORDS_DEFAULT;
+                var awInFocus = playerWorldCoords.Item1 != Constants.RUNTIME_COORDS_DEFAULT;
                 runtimePositionIndicator.SetActive(awInFocus);
                 if (awInFocus)
                 {
-                    var playerTileCoords = Utils.WorldToTileCoords(playerWorldCoords);
+                    var playerTileCoords = Utils.WorldToTileCoords(playerWorldCoords.Item1);
                     Camera.main.transform.position = new Vector3(
                         playerTileCoords.x, playerTileCoords.y, Camera.main.transform.position.z);
+
+                    runtimeDirectionIndicator.localRotation = Quaternion.Euler(0, 0, playerWorldCoords.Item2 switch
+                    {
+                        Direction.N => 45,
+                        Direction.NE => 0,
+                        Direction.E => 315,
+                        Direction.SE => 270,
+                        Direction.S => 225,
+                        Direction.SW => 180,
+                        Direction.W => 135,
+                        _ => 90
+                    });
 
                 }
                 await Task.Delay(Constants.RUNTIME_COORDS_POLLING_PERIOD);

@@ -1,3 +1,4 @@
+using AlphaWorldMap.Models;
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -13,19 +14,20 @@ namespace AlphaWorldMap
         public static Vector2 WorldToTileCoords(Vector2 worldCoords)
             => Constants.GZ_COORDS + Constants.WORLD_COORD_MULTIPLIER * new Vector2(worldCoords.x, worldCoords.y);
 
-        public static Vector2 GetRuntimeCoordinates()
+        public static (Vector2, Direction) GetRuntimeCoordinates()
         {
             var title = GetActiveWindowTitle();
-            if (!title.Contains(Constants.AW_HEADER)) return Constants.RUNTIME_COORDS_DEFAULT;
+            if (!title.Contains(Constants.AW_HEADER)) return (Constants.RUNTIME_COORDS_DEFAULT, Direction.X);
             var coords = title.Replace(Constants.AW_HEADER, string.Empty).Split(' ');
-            if (coords[0] == "ground") return Vector2.zero; /* ground zero */
+            var direction = (Direction)Enum.Parse(typeof(Direction), coords[3]);
+            if (coords[0] == "ground") return (Vector2.zero, direction); /* ground zero */
             var lat = coords[0].Contains("N")
                 ? int.Parse(coords[0].Replace("N", string.Empty))
                 : -int.Parse(coords[0].Replace("S", string.Empty));
             var lon = coords[1].Contains("E")
                 ? int.Parse(coords[1].Replace("E", string.Empty))
                 : -int.Parse(coords[1].Replace("W", string.Empty));
-            return new Vector2(lon, lat);
+            return (new Vector2(lon, lat), direction);
         }
 
         [DllImport("user32.dll")]
