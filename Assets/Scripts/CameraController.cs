@@ -74,7 +74,7 @@ namespace AlphaWorldMap
             {
                 var mousePosition = Input.mousePosition;
                 var delta = _previousMousePosition - mousePosition;
-                Camera.main.transform.position += Constants.MOUSE_MULTIPLIER * delta;
+                Camera.main.transform.position += Constants.MOUSE_MULTIPLIER * _zoomLevel * delta;
                 _previousMousePosition = mousePosition;
             }
         }
