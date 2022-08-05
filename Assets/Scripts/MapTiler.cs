@@ -14,9 +14,9 @@ namespace AlphaWorldMap
         {
             RemoveFarTiles(centerCoords);
 
-            for (var xi = centerCoords.x - Constants.RENDER_RADIUS; xi < centerCoords.x + Constants.RENDER_RADIUS; xi++)
+            for (var xi = centerCoords.x - Constants.RENDER_RADIUS; xi <= centerCoords.x + Constants.RENDER_RADIUS; xi++)
             {
-                for (var yi = centerCoords.y - Constants.RENDER_RADIUS; yi < centerCoords.y + Constants.RENDER_RADIUS; yi++)
+                for (var yi = centerCoords.y - Constants.RENDER_RADIUS; yi <= centerCoords.y + Constants.RENDER_RADIUS; yi++)
                 {
                     var tileCoords = new Vector2(xi, yi);
                     if (_renderedTiles.ContainsKey(tileCoords)) continue;

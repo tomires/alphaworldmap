@@ -10,7 +10,7 @@ namespace AlphaWorldMap
         [SerializeField] private Transform runtimeDirectionIndicator;
         private bool _dragging = false;
         private Vector3 _previousMousePosition;
-        private float _updateTilesTimer;
+        private Vector2 _lastUpdatedPosition = Vector2.zero;
 
         private void Start()
         {
@@ -44,6 +44,9 @@ namespace AlphaWorldMap
                         _ => 90
                     });
 
+                    var distance = Vector2.Distance(Camera.main.transform.position, _lastUpdatedPosition);
+                    if (distance > Constants.TILE_UPDATE_DISTANCE)
+                        UpdateTiles();
                 }
                 await Task.Delay(Constants.RUNTIME_COORDS_POLLING_PERIOD);
             }
@@ -54,13 +57,12 @@ namespace AlphaWorldMap
             if (Input.GetMouseButtonDown(0))
             {
                 _previousMousePosition = Input.mousePosition;
-                _updateTilesTimer = Constants.TILE_UPDATE_PERIOD;
                 _dragging = true;
             }
             else if (Input.GetMouseButtonUp(0))
             {
                 _dragging = false;
-                UpdateTiles(true);
+                UpdateTiles();
             }
 
             if (_dragging)
@@ -69,20 +71,15 @@ namespace AlphaWorldMap
                 var delta = _previousMousePosition - mousePosition;
                 Camera.main.transform.position += Constants.MOUSE_MULTIPLIER * delta;
                 _previousMousePosition = mousePosition;
-                UpdateTiles();
             }
         }
 
-        private void UpdateTiles(bool force = false)
+        private void UpdateTiles()
         {
-            _updateTilesTimer -= Time.deltaTime;
-            if (_updateTilesTimer < 0 || force)
-            {
-                MapTiler.Instance.RenderTiles(new Vector2(
-                    Mathf.FloorToInt(Camera.main.transform.position.x),
-                    -Mathf.FloorToInt(Camera.main.transform.position.y)));
-                _updateTilesTimer = Constants.TILE_UPDATE_PERIOD;
-            }
+            _lastUpdatedPosition = Camera.main.transform.position;
+            MapTiler.Instance.RenderTiles(new Vector2(
+                Mathf.FloorToInt(Camera.main.transform.position.x),
+                -Mathf.FloorToInt(Camera.main.transform.position.y)));
         }
     }
 }
