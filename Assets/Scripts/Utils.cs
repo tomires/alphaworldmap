@@ -18,6 +18,7 @@ namespace AlphaWorldMap
             var title = GetActiveWindowTitle();
             if (!title.Contains(Constants.AW_HEADER)) return Constants.RUNTIME_COORDS_DEFAULT;
             var coords = title.Replace(Constants.AW_HEADER, string.Empty).Split(' ');
+            if (coords[0] == "ground") return Vector2.zero; /* ground zero */
             var lat = coords[0].Contains("N")
                 ? int.Parse(coords[0].Replace("N", string.Empty))
                 : -int.Parse(coords[0].Replace("S", string.Empty));
