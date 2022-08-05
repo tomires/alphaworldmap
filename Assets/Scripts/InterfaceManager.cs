@@ -8,6 +8,8 @@ namespace AlphaWorldMap
     {
         [SerializeField] Button minimizeButton;
         [SerializeField] Button maximizeButton;
+        [SerializeField] Button recordButton;
+        [SerializeField] GameObject recordingsContainer;
         [SerializeField] GameObject border;
 
         public Action WindowMinimized;
@@ -60,6 +62,8 @@ namespace AlphaWorldMap
             border.SetActive(minimized);
             minimizeButton.gameObject.SetActive(!minimized);
             maximizeButton.gameObject.SetActive(minimized);
+            recordButton.gameObject.SetActive(!minimized);
+            recordingsContainer.gameObject.SetActive(!minimized);
         }
     }
 }
