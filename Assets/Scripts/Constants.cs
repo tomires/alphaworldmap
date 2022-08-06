@@ -4,9 +4,11 @@ namespace AlphaWorldMap
 {
     public static class Constants
     {
-        public static string TILE_DIRECTORY = $"/{{0}}_{{1}}";
-        public static string TILE_PATH = $"{TILE_DIRECTORY}/9_{{2}}_{{3}}.png";
+        public static string TILES_DIRECTORY => $"{Application.persistentDataPath}/{{0}}_{{1}}";
+        public static string TILE_PATH => $"{TILES_DIRECTORY}/9_{{2}}_{{3}}.png";
         public static string TILE_URL = $"http://mapper.activeworlds.com/alphaworld/{{0}}_{{1}}/9_{{2}}_{{3}}.png";
+        public static string RECORDINGS_DIRECTORY => $"{Application.persistentDataPath}/recordings";
+        public static string RECORDING_PATH => $"{RECORDINGS_DIRECTORY}/{{0}}";
         public const string AW_HEADER = "Activeworlds - AlphaWorld at ";
         public const string UI_LAYER = "UI";
         public const char CSV_DELIMETER = ':';

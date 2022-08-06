@@ -1,10 +1,11 @@
 using AlphaWorldMap.Models;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace AlphaWorldMap
 {
-    public class CameraController : MonoSingleton<MapTiler>
+    public class CameraController : MonoSingleton<CameraController>
     {
         [SerializeField] private GameObject runtimePositionIndicator;
         [SerializeField] private Transform runtimeDirectionIndicator;
@@ -14,14 +15,16 @@ namespace AlphaWorldMap
         private float _zoomLevel = Constants.ZOOM_LEVEL_DEFAULT;
         private bool _inputLocked = false;
 
+        public Action<Vector2> OnRuntimeCoordinatesUpdated;
+
         private void Start()
         {
             UpdateTiles();
             RuntimePositioner();
             Application.runInBackground = true;
             SetZoomLevel();
-            InterfaceManager.Instance.WindowMinimized += LockInput;
-            InterfaceManager.Instance.WindowMaximized += UnlockInput;
+            InterfaceManager.Instance.OnWindowMinimized += LockInput;
+            InterfaceManager.Instance.OnWindowMaximized += UnlockInput;
         }
 
         private async void RuntimePositioner()
@@ -33,6 +36,7 @@ namespace AlphaWorldMap
                 runtimePositionIndicator.SetActive(awInFocus);
                 if (awInFocus)
                 {
+                    OnRuntimeCoordinatesUpdated?.Invoke(playerWorldCoords.Item1);
                     var playerTileCoords = Utils.WorldToTileCoords(playerWorldCoords.Item1);
                     Camera.main.transform.position = new Vector3(
                         playerTileCoords.x, playerTileCoords.y, Camera.main.transform.position.z);

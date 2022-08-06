@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 namespace AlphaWorldMap
 {
-    public class Downloader : MonoSingleton<MapTiler>
+    public class Downloader : MonoSingleton<Downloader>
     {
         private void Start()
         {
@@ -21,8 +21,8 @@ namespace AlphaWorldMap
                 while (y <= Constants.Y_MAX)
                 {
                     var big = Utils.GetBigTileCoords(new Vector2(x, y));
-                    var path = Application.persistentDataPath + string.Format(Constants.TILE_PATH, big.Item1, big.Item2, x, y);
-                    var directory = Application.persistentDataPath + string.Format(Constants.TILE_DIRECTORY, big.Item1, big.Item2);
+                    var path = string.Format(Constants.TILE_PATH, big.Item1, big.Item2, x, y);
+                    var directory = string.Format(Constants.TILES_DIRECTORY, big.Item1, big.Item2);
                     if (!File.Exists(path))
                     {
                         var url = string.Format(Constants.TILE_URL, big.Item1, big.Item2, x, y);

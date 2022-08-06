@@ -21,7 +21,7 @@ namespace AlphaWorldMap
                     var tileCoords = new Vector2(xi, yi);
                     if (_renderedTiles.ContainsKey(tileCoords)) continue;
                     var big = Utils.GetBigTileCoords(tileCoords);
-                    var path = Application.persistentDataPath + string.Format(Constants.TILE_PATH, big.Item1, big.Item2, xi, yi);
+                    var path = string.Format(Constants.TILE_PATH, big.Item1, big.Item2, xi, yi);
                     var tile = GetFreshTile(tileCoords);
                     SetTexture(ref tile, path);
                     _renderedTiles.Add(tileCoords, tile);

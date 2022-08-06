@@ -243,8 +243,12 @@ MonoBehaviour:
   minimizeButton: {fileID: 1889394625}
   maximizeButton: {fileID: 116268998}
   recordButton: {fileID: 85466468}
+  recordIcon: {fileID: 1899260490}
+  stopRecordingIcon: {fileID: 206197718}
   recordingsContainer: {fileID: 1565113921}
   border: {fileID: 882102775}
+  recordingItemPrefab: {fileID: 7885235472930377779, guid: 705b0c0819cf7154591dc9e3a146fb35, type: 3}
+  recordingItemParent: {fileID: 1450758566}
 --- !u!1 &64985439
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,12 +660,12 @@ GameObject:
   - component: {fileID: 206197719}
   - component: {fileID: 206197718}
   m_Layer: 5
-  m_Name: StopIcon
+  m_Name: StopRecordingIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &206197717
 RectTransform:
   m_ObjectHideFlags: 0
@@ -688,7 +692,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 206197716}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1183,12 +1187,12 @@ GameObject:
   - component: {fileID: 1102295530}
   - component: {fileID: 1102295532}
   m_Layer: 0
-  m_Name: HistoryMapper
+  m_Name: RecordingController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!120 &1102295530
 LineRenderer:
   m_ObjectHideFlags: 0

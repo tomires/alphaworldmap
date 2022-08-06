@@ -32,6 +32,14 @@ namespace AlphaWorldMap
             return (new Vector2(lon, lat), direction);
         }
 
+        public static string UnixTimestampToHumanReadable(long timestamp)
+        {
+            var dateTime = DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;
+            return dateTime.ToString("yyyy/MM/dd HH:mm");
+        }
+
+        public static long GetUnixTimestamp() => DateTimeOffset.Now.ToUnixTimeSeconds();
+
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
