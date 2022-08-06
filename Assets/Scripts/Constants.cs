@@ -4,7 +4,7 @@ namespace AlphaWorldMap
 {
     public static class Constants
     {
-        public static string TILES_DIRECTORY => $"{Application.persistentDataPath}/{{0}}_{{1}}";
+        public static string TILES_DIRECTORY => $"{Application.streamingAssetsPath}/{{0}}_{{1}}";
         public static string TILE_PATH => $"{TILES_DIRECTORY}/9_{{2}}_{{3}}.png";
         public static string TILE_URL = $"http://mapper.activeworlds.com/alphaworld/{{0}}_{{1}}/9_{{2}}_{{3}}.png";
         public static string RECORDINGS_DIRECTORY => $"{Application.persistentDataPath}/recordings";
