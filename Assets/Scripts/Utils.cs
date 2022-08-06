@@ -1,8 +1,10 @@
 using AlphaWorldMap.Models;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace AlphaWorldMap
 {
@@ -85,6 +87,19 @@ namespace AlphaWorldMap
             if (GetWindowText(handle, Buff, nChars) > 0)
                 return Buff.ToString();
             return "";
+        }
+
+        public static bool IsMouseOverUIObject()
+        {
+            PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
+            var results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+            foreach (RaycastResult result in results)
+            {
+                if (result.gameObject.layer != LayerMask.NameToLayer(Constants.UI_LAYER)) continue;
+                return true;
+            }
+            return false;
         }
     }
 }

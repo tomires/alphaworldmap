@@ -8,6 +8,7 @@ namespace AlphaWorldMap
         public static string TILE_PATH = $"{TILE_DIRECTORY}/9_{{2}}_{{3}}.png";
         public static string TILE_URL = $"http://mapper.activeworlds.com/alphaworld/{{0}}_{{1}}/9_{{2}}_{{3}}.png";
         public const string AW_HEADER = "Activeworlds - AlphaWorld at ";
+        public const string UI_LAYER = "UI";
         public const char CSV_DELIMETER = ':';
 
         public static int TILE_PIXEL_WIDTH = 320;

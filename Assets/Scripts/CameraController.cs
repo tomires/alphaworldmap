@@ -61,7 +61,7 @@ namespace AlphaWorldMap
         {
             if (_inputLocked) return;
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !Utils.IsMouseOverUIObject())
             {
                 _previousMousePosition = Input.mousePosition;
                 _dragging = true;
