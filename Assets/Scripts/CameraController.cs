@@ -14,14 +14,17 @@ namespace AlphaWorldMap
         private Vector2 _lastUpdatedPosition = Vector2.zero;
         private float _zoomLevel = Constants.ZOOM_LEVEL_DEFAULT;
         private bool _inputLocked = false;
+        private Vector3 _positionIndicatorDefaultScale;
 
         public Action<Vector2> OnRuntimeCoordinatesUpdated;
+        public Action<float> OnZoomLevelChanged;
 
         private void Start()
         {
             UpdateTiles();
             RuntimePositioner();
             Application.runInBackground = true;
+            _positionIndicatorDefaultScale = runtimePositionIndicator.transform.localScale;
             SetZoomLevel();
             InterfaceManager.Instance.OnWindowMinimized += LockInput;
             InterfaceManager.Instance.OnWindowMaximized += UnlockInput;
@@ -112,7 +115,11 @@ namespace AlphaWorldMap
         }
 
         private void SetZoomLevel()
-            => Camera.main.orthographicSize = _zoomLevel;
+        {
+            Camera.main.orthographicSize = _zoomLevel;
+            runtimePositionIndicator.transform.localScale = _zoomLevel * _positionIndicatorDefaultScale;
+            OnZoomLevelChanged?.Invoke(_zoomLevel);
+        }
 
         private void LockInput()
         {

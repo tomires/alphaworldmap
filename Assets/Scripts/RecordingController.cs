@@ -14,14 +14,17 @@ namespace AlphaWorldMap
         private LineRenderer _renderer;
         private bool _recording = false;
         private string _recordingPath;
+        private float _rendererBaseWidth;
 
         private void Start()
         {
             Directory.CreateDirectory(Constants.RECORDINGS_DIRECTORY);
             CameraController.Instance.OnRuntimeCoordinatesUpdated += RecordCoordinates;
+            CameraController.Instance.OnZoomLevelChanged += ResizeLineRenderer;
             InterfaceManager.Instance.OnRecordButtonClicked += OnRecordButtonClicked;
             InterfaceManager.Instance.OnRecordingClicked += PlayRecording;
             _renderer = GetComponent<LineRenderer>();
+            _rendererBaseWidth = _renderer.startWidth / Constants.ZOOM_LEVEL_DEFAULT;
             UpdateRecordingsList();
         }
 
@@ -89,6 +92,11 @@ namespace AlphaWorldMap
 
             var centerCoords = new Vector2(minCoord.x + (maxCoord.x - minCoord.x) / 2f, minCoord.y + (maxCoord.y - minCoord.y) / 2f);
             CameraController.Instance.JumpToCoordinates(centerCoords);
+        }
+
+        private void ResizeLineRenderer(float zoomLevel)
+        {
+            _renderer.startWidth = _renderer.endWidth = _rendererBaseWidth * zoomLevel;
         }
     }
 }
