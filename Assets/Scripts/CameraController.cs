@@ -27,6 +27,13 @@ namespace AlphaWorldMap
             InterfaceManager.Instance.OnWindowMaximized += UnlockInput;
         }
 
+        public void JumpToCoordinates(Vector2 worldCoords)
+        {
+            var tileCoords = Utils.WorldToTileCoords(worldCoords);
+            Camera.main.transform.position = new Vector3(
+                tileCoords.x, tileCoords.y, Camera.main.transform.position.z);
+        }
+
         private async void RuntimePositioner()
         {
             while (Application.isPlaying)

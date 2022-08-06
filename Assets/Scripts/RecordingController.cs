@@ -66,18 +66,29 @@ namespace AlphaWorldMap
             var path = string.Format(Constants.RECORDING_PATH, timestamp);
             var coords = new List<Vector3>();
 
+            var minCoord = new Vector2(float.MaxValue, float.MaxValue);
+            var maxCoord = new Vector2(float.MinValue, float.MinValue);
+
             using (var reader = new StreamReader(path))
             {
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine().Split(Constants.CSV_DELIMETER);
-                    var tileCoord = Utils.WorldToTileCoords(new Vector2(int.Parse(line[0]), int.Parse(line[1])));
+                    var worldCoord = new Vector2(int.Parse(line[0]), int.Parse(line[1]));
+                    minCoord.x = Mathf.Min(minCoord.x, worldCoord.x);
+                    maxCoord.x = Mathf.Max(maxCoord.x, worldCoord.x);
+                    minCoord.y = Mathf.Min(minCoord.y, worldCoord.y);
+                    maxCoord.y = Mathf.Max(maxCoord.y, worldCoord.y);
+                    var tileCoord = Utils.WorldToTileCoords(worldCoord);
                     coords.Add(new Vector3(tileCoord.x, tileCoord.y, Constants.PATH_Z_POS));
                 }
             }
 
             _renderer.positionCount = coords.Count;
             _renderer.SetPositions(coords.ToArray());
+
+            var centerCoords = new Vector2(minCoord.x + (maxCoord.x - minCoord.x) / 2f, minCoord.y + (maxCoord.y - minCoord.y) / 2f);
+            CameraController.Instance.JumpToCoordinates(centerCoords);
         }
     }
 }
