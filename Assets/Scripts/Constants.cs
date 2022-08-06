@@ -30,7 +30,7 @@ namespace AlphaWorldMap
         public static float ZOOM_LEVEL_MAX = 5;
         public static float ZOOM_LEVEL_LOCKED = .5f;
         public static float TILE_UPDATE_DISTANCE = 1.5f;
-        public static float MOUSE_MULTIPLIER = .00105f;
+        public static float MOUSE_MULTIPLIER => 2f / Screen.height;
         public static float WORLD_COORD_MULTIPLIER = .0078125f; /* 1/128 */
         public static float PATH_Z_POS = -.1f;
         public static float REFERENCE_DPI = 163f;
