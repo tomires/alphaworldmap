@@ -125,12 +125,14 @@ namespace AlphaWorldMap
         {
             _inputLocked = true;
             Camera.main.orthographicSize = Constants.ZOOM_LEVEL_LOCKED;
+            runtimePositionIndicator.transform.localScale = Constants.ZOOM_LEVEL_LOCKED * 3f * _positionIndicatorDefaultScale;
+            OnZoomLevelChanged?.Invoke(3f * Constants.ZOOM_LEVEL_LOCKED);
         }
 
         private void UnlockInput()
         {
             _inputLocked = false;
-            Camera.main.orthographicSize = _zoomLevel;
+            SetZoomLevel();
         }
     }
 }
