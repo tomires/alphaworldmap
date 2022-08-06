@@ -8,6 +8,9 @@ namespace AlphaWorldMap
     [RequireComponent(typeof(LineRenderer))]
     public class RecordingController : MonoSingleton<RecordingController>
     {
+        [SerializeField] private Material pathDefaultMaterial;
+        [SerializeField] private Material pathRecordingMaterial;
+
         private LineRenderer _renderer;
         private bool _recording = false;
         private string _recordingPath;
@@ -25,6 +28,7 @@ namespace AlphaWorldMap
         public void OnRecordButtonClicked()
         {
             _recording = !_recording;
+            _renderer.material = _recording ? pathRecordingMaterial : pathDefaultMaterial;
             InterfaceManager.Instance.PropagateRecordingStatus(_recording);
             if (_recording)
                 _recordingPath = string.Format(Constants.RECORDING_PATH, Utils.GetUnixTimestamp());
@@ -45,6 +49,10 @@ namespace AlphaWorldMap
             if (!_recording) return;
             using (var writer = new StreamWriter(_recordingPath, true))
                 writer.WriteLine($"{coords.x}{Constants.CSV_DELIMETER}{coords.y}");
+            _renderer.positionCount++;
+
+            var tileCoords = Utils.WorldToTileCoords(coords);
+            _renderer.SetPosition(_renderer.positionCount - 1, new Vector3(tileCoords.x, tileCoords.y, Constants.PATH_Z_POS));
         }
 
         private void PlayRecording(long timestamp)
