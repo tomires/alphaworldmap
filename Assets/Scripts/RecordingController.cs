@@ -15,6 +15,7 @@ namespace AlphaWorldMap
         private bool _recording = false;
         private string _recordingPath;
         private float _rendererBaseWidth;
+        private Vector2 _lastRecordedCoordinates;
 
         private void Start()
         {
@@ -34,7 +35,10 @@ namespace AlphaWorldMap
             _renderer.material = _recording ? pathRecordingMaterial : pathDefaultMaterial;
             InterfaceManager.Instance.PropagateRecordingStatus(_recording);
             if (_recording)
+            {
+                _lastRecordedCoordinates = new Vector2(float.MinValue, float.MinValue);
                 _recordingPath = string.Format(Constants.RECORDING_PATH, Utils.GetUnixTimestamp());
+            }
             else
                 UpdateRecordingsList();
         }
@@ -49,13 +53,15 @@ namespace AlphaWorldMap
 
         private void RecordCoordinates(Vector2 coords)
         {
-            if (!_recording) return;
+            if (!_recording || coords == _lastRecordedCoordinates) return;
+
             using (var writer = new StreamWriter(_recordingPath, true))
                 writer.WriteLine($"{coords.x}{Constants.CSV_DELIMETER}{coords.y}");
             _renderer.positionCount++;
 
             var tileCoords = Utils.WorldToTileCoords(coords);
             _renderer.SetPosition(_renderer.positionCount - 1, new Vector3(tileCoords.x, tileCoords.y, Constants.PATH_Z_POS));
+            _lastRecordedCoordinates = coords;
         }
 
         private void PlayRecording(long timestamp)
